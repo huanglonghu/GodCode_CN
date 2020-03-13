@@ -22,6 +22,7 @@ import com.example.godcode.ui.fragment.asset.Asset_DetailFragment;
 import com.example.godcode.ui.fragment.asset.Asset_GroupFragment;
 import com.example.godcode.utils.FormatUtil;
 import com.example.godcode.utils.GsonUtil;
+import com.example.godcode.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,7 +171,7 @@ public class Asset_1_Fragment extends BaseFragment {
 
     }
 
-    public void refreshAsset(int coinCount, int count, int normalCount, int errorCount, String divideMoney, int awardCount) {
+    public void refreshAsset(double coinCount, int count, int normalCount, int errorCount, String divideMoney, int awardCount) {
         binding.setCoinCount(coinCount);
         binding.setCount(count);
         binding.setNormalCount(normalCount);
@@ -204,6 +205,7 @@ public class Asset_1_Fragment extends BaseFragment {
             } else if (index == 1) {
                 //改分组是否有该机器
                 HashMap<String, Integer> assetMap = asset_detailFragment.getAssetMap();
+                LogUtil.log(assetMap+"==============gfd================"+assetMap.containsKey(data.getProductNumber()));
                 if (assetMap != null && assetMap.containsKey(data.getProductNumber())) {
                     binding.setCoinCount(binding.getCoinCount() + coinCount);
                     binding.setAwardCount(binding.getAwardCount() + awardCount);

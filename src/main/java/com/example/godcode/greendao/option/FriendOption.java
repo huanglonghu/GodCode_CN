@@ -77,24 +77,24 @@ public class FriendOption {
     public void addFriend(FriendListResponse.ResultBean.ItemsBean itemsBean) {
         Friend friend = querryFriend(itemsBean.getToUserID());
         if (friend == null) {
-            FriendDao friendDao = GodCodeApplication.getInstance().getDaoSession().getFriendDao();
-            friend = new Friend();
-            friend.setUserId(itemsBean.getToUserID());
-            friend.setUserName(itemsBean.getNickName());
-            friend.setFriendId(Constant.userId);
-            friend.setHeadImageUrl(itemsBean.getFriendImgPath());
-            friend.setSyNum(itemsBean.getToUserName());
-            friend.setId_(itemsBean.getId());
-            String nickName = itemsBean.getNickName();
-            if (!TextUtils.isEmpty(nickName)) {
-                String firstChar = StringUtil.getPingYin(nickName).substring(0, 1);
-                friend.setFirstChar(firstChar.toUpperCase());
-                LogUtil.log(firstChar.toUpperCase()+"======firstChar========" + firstChar);
-            }
-            friendDao.insert(friend);
+        FriendDao friendDao = GodCodeApplication.getInstance().getDaoSession().getFriendDao();
+        friend = new Friend();
+        friend.setUserId(itemsBean.getToUserID());
+        friend.setUserName(itemsBean.getNickName());
+        friend.setFriendId(Constant.userId);
+        friend.setHeadImageUrl(itemsBean.getFriendImgPath());
+        friend.setSyNum(itemsBean.getToUserName());
+        friend.setId_(itemsBean.getId());
+        String nickName = itemsBean.getNickName();
+        if (!TextUtils.isEmpty(nickName)) {
+            String firstChar = StringUtil.getPingYin(nickName).substring(0, 1);
+            friend.setFirstChar(firstChar.toUpperCase());
+            LogUtil.log(firstChar.toUpperCase()+"======firstChar========" + firstChar);
         }
-
+        friendDao.insert(friend);
     }
+
+}
 
 
     public void deleteFriend(int id) {

@@ -40,7 +40,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RevenueConfigFragment extends BaseFragment{
+public class RevenueConfigFragment extends BaseFragment {
     private FragmentRevenueconfigBinding binding;
     private View view;
     private RevenueConfigListAdapter adapter;
@@ -91,7 +91,7 @@ public class RevenueConfigFragment extends BaseFragment{
 
             @Override
             public void onNext(RxEvent rxEvent) {
-                switch (rxEvent.getEventType()){
+                switch (rxEvent.getEventType()) {
                     case EventType.EVENTTYPE_SELECT_FRIEND:
                         int id = rxEvent.getId();
                         for (RevenueDivideItem revenueDivideItem : revenueDivideList) {
@@ -174,6 +174,10 @@ public class RevenueConfigFragment extends BaseFragment{
         binding.commitRevenue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (currentRevenueItem == null) {
+                    Toast.makeText(getContext(), "请先添加分成商家", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 int divideRate = revenueDivideList.get(revenueDivideList.size() - 1).getDivideRate();
                 if (divideRate > mainDivideRate) {
                     Toast.makeText(activity, "超出最大可分成值", Toast.LENGTH_SHORT).show();
@@ -263,7 +267,6 @@ public class RevenueConfigFragment extends BaseFragment{
     }
 
 
-
     public class TransferEquityStrategy extends EtStrategy {
         @Override
         public void etComplete(String str, int position) {
@@ -316,7 +319,7 @@ public class RevenueConfigFragment extends BaseFragment{
                         Toast.makeText(activity, "修改成功", Toast.LENGTH_SHORT).show();
                         int i = value - revenueDivideItem.getDivideRate();
                         revenueDivideItem.setDivideRate(value);
-                        revenueDivideList.set(position,revenueDivideItem);
+                        revenueDivideList.set(position, revenueDivideItem);
                         adapter.refresData(position);
                         mainDivideRate = mainDivideRate - i;
                         binding.setMainPresent(mainDivideRate);

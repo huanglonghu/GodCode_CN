@@ -17,6 +17,8 @@
             name="title"
             type="String" />
 
+        <import type="android.view.View" />
+
 
     </data>
 
@@ -150,6 +152,29 @@
                     style="@style/text2"
                     android:layout_marginLeft="20dp"
                     android:text="@string/wdsyfc" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_item"
+                android:onClick="@{()->presenter.step2Fragment(&quot;myAgent&quot;)}"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/myagent" />
+
+                <TextView
+                    style="@style/text2"
+                    android:layout_marginLeft="20dp"
+                    android:text="我的代理" />
             </LinearLayout>
 
 

@@ -18,6 +18,16 @@ public class LoginBody {
     private String deviceToken;
     private String openID;
     private String verificationCode;
+    private String password;
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getUserName() {
         return userName;

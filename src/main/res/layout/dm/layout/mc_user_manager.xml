@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.example.godcode.presenter.Presenter" />
+
+        <variable
+            name="isAuthorize"
+            type="boolean" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/layout_toolbar6"
+            bind:presenter="@{presenter}"
+            bind:title="@{isAuthorize?@string/qxsq:@string/sqgl}" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="60pt"
+            android:layout_marginRight="60pt">
+
+
+            <ListView
+                android:id="@+id/lv_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+
+
+            <com.example.godcode.ui.view.LetterView
+                android:id="@+id/letter_view"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

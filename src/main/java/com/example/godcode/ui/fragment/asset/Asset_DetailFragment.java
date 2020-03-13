@@ -133,6 +133,7 @@ public class Asset_DetailFragment extends BaseFragment implements AssetSelectDia
 
     public void refreshDivide(WebSocketNews1.DataBean data) {
         String productNumber = data.getProductNumber();
+        LogUtil.log("=================refreshDivide==================");
         try {
             if (assetMap.containsKey(productNumber)) {
                 int position = assetMap.get(productNumber);
@@ -148,6 +149,8 @@ public class Asset_DetailFragment extends BaseFragment implements AssetSelectDia
                 dataBean.setTodayCoin(dataBean.getTodayCoin() + coinCount);
                 double divideMoney = Double.parseDouble(dataBean.getDivideIncome()) + data.getDivedeMoney();
                 dataBean.setDivideIncome(divideMoney);
+                double paperMoney = data.getPaperMoney();
+                dataBean.setTodayBanknote(dataBean.getTodayBanknote()+(int)paperMoney);
                 assetListAdapter.refreshData(position, dataBean);
             }
         }catch (Exception e){
@@ -158,7 +161,7 @@ public class Asset_DetailFragment extends BaseFragment implements AssetSelectDia
     }
 
 
-    private HashMap<String, Integer> assetMap;
+    private HashMap<String, Integer> assetMap=new HashMap<>();
 
     public HashMap<String, Integer> getAssetMap() {
         return assetMap;
@@ -196,7 +199,6 @@ public class Asset_DetailFragment extends BaseFragment implements AssetSelectDia
             urlMap.put("ProductType", productType);
         }
         urlMap.put("page", page + "");
-        assetMap=new HashMap<>();
         HttpUtil.getInstance().getGroupById(urlMap).subscribe(
                 assetStr -> {
                     MyAssetList myAssetList = new Gson().fromJson(assetStr, MyAssetList.class);

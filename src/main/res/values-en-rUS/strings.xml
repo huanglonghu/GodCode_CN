@@ -25,15 +25,17 @@
 
     <string name="authentication">身份验证</string>
 
-
+    <string name="myAgent">我的代理</string>
     <string name="startDate">Start Time</string>
     <string name="endDate">End Time</string>
 
+    <string name="txsy">提现收益</string>
 
+    <string name="totalIncome">Total Income</string>
     <string name="wxdl">SIGN IN WITH WECHAT</string>
     <string name="zhdl">SIGN IN WITH ACCOUNT</string>
     <string name="zczh">CREAT A NEW ACCOUNT</string>
-    <string name="home">HOME</string>
+    <string name="home">Home</string>
     <string name="sys">SCAN BARCODE</string>
     <string name="sk">REQUEST PAYMENT</string>
     <string name="balance">BALANCE</string>
@@ -43,8 +45,8 @@
     <string name="sjcz">PHONE RECHARGE</string>
     <string name="ykkg">REMOTE CONTROL</string>
     <string name="more">MORE</string>
-    <string name="friends">FRIENDS</string>
-    <string name="fx">DISCOVERY</string>
+    <string name="friends">Friends</string>
+    <string name="fx">News</string>
     <string name="smy">SCAN</string>
     <string name="fh">RETURN</string>
     <string name="ewm">QR CODE</string>
@@ -92,7 +94,7 @@
     <string name="srmc">ITME NAME</string>
     <string name="selectTpe">Please choose the product type.</string>
     <string name="mine">MINE</string>
-    <string name="me">ME</string>
+    <string name="me">My Profile</string>
     <string name="syNumber">SY A/C NUMBER:</string>
     <string name="wdsyfc">MY PROFIT SHARING RATIO</string>
     <string name="setting">SETTING</string>
@@ -232,4 +234,9 @@
     <string name="selectAuthWay">选择验证方式</string>
     <string name="zb">纸币:</string>
     <string name="freeMode">免费模式</string>
+    <string name="parameterChange">参数调整</string>
+
+    <string name="sqgl">授权管理</string>
+    <string name="qxsq">取消授权</string>
+
 </resources>

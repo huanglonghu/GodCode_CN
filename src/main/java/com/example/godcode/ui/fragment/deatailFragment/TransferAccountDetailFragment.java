@@ -31,6 +31,8 @@ import com.example.godcode.utils.PayPwdSetting;
 import com.example.godcode.utils.StringUtil;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 public class TransferAccountDetailFragment extends BaseFragment implements  MyEditText.MoneyValueListener {
     private FragmentTransferaccountDetailBinding binding;
     private View view;
@@ -157,15 +159,19 @@ public class TransferAccountDetailFragment extends BaseFragment implements  MyEd
         transferBody.setUserID(Constant.userId);
         HttpUtil.getInstance().transfer(transferBody).subscribe(
                 transferStr -> {
-                    if (transferStr.contains("\"success\":false")) {
-                        PsdPopupWindow.getInstance(activity).clear();
-                        Toast.makeText(activity, "密码输入错误，请重新输入", Toast.LENGTH_SHORT).show();
-                    }else {
+
+                    JSONObject jo= new JSONObject(transferStr);
+                    boolean success = jo.getBoolean("success");
+                    if(success){
                         Toast.makeText(activity, "转账成功", Toast.LENGTH_SHORT).show();
                         PsdPopupWindow.getInstance(activity).exit();
                         presenter.back();
+                    }else {
+                        JSONObject error = jo.getJSONObject("error");
+                        String message = error.getString("message");
+                        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                        PsdPopupWindow.getInstance(activity).clear();
                     }
-
                 });
     }
 

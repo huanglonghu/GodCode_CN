@@ -38,6 +38,7 @@ import com.example.godcode.bean.TransationDetail;
 import com.example.godcode.bean.TransferBody;
 import com.example.godcode.bean.TransferDivide;
 import com.example.godcode.bean.Tx;
+import com.example.godcode.bean.TxSyBody;
 import com.example.godcode.bean.UnLockMc;
 import com.example.godcode.bean.UpdateFriend;
 import com.example.godcode.bean.WxPay;
@@ -372,6 +373,23 @@ public interface HttpInterface {
 
     @GET("/api/services/app/SystemSettings/GetSystemSettings")
     Call<ResponseBody> getSystemSetting();
+
+    @POST("/api/services/app/WithdrawMoneyProxy/QueryPagedWitharawMoneyProxyIncomes")
+    Call<ResponseBody> getTxSy(@Body TxSyBody txSyBody);
+
+
+    @GET("/api/services/app/MCAuthorizeManager/GetManagerUserInfoByUserId")
+    Call<ResponseBody> getUserList(@Query("ISAuthorize") boolean ISAuthorize, @Query("UserID") int userId);
+
+    @POST("/api/services/app/MCAuthorizeManager/Create")
+    Call<ResponseBody> addMcManager(@Body HashMap<String, Integer> map);
+
+    @DELETE("/api/services/app/MCAuthorizeManager/Delete")
+    Call<ResponseBody> deleteMcManager(@Query("Id") int id);
+
+
+    @POST("/api/services/app/User/ResetUserPassword")
+    Call<ResponseBody> resetPwd(@Body HashMap<String, String> map);
 
 
 }

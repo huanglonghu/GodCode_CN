@@ -82,7 +82,7 @@ public class  GroupMsg {
         private int normalCount;
         private int errorCount;
         private double dividedMoney;
-        private int coinCount;
+        private double coinCount;
         private int count;
         private int sumAwardCount;
 
@@ -130,11 +130,11 @@ public class  GroupMsg {
             this.dividedMoney = dividedMoney;
         }
 
-        public int getCoinCount() {
+        public double getCoinCount() {
             return coinCount;
         }
 
-        public void setCoinCount(int coinCount) {
+        public void setCoinCount(double coinCount) {
             this.coinCount = coinCount;
         }
 

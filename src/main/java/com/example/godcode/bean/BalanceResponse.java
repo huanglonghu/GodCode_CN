@@ -84,6 +84,15 @@ public class BalanceResponse {
         private String feeType;
         private double withdrawRate;
         private int id;
+        private double canPutMoney;
+
+        public double getCanPutMoney() {
+            return canPutMoney;
+        }
+
+        public void setCanPutMoney(double canPutMoney) {
+            this.canPutMoney = canPutMoney;
+        }
 
         public double getBalances() {
             return balances;

@@ -21,6 +21,11 @@
     <string name="loadCompleted">没有更多数据</string>
     <string name="text_no_song">无数据</string>
 
+    <string name="myAgent">我的代理</string>
+
+
+    <string name="txsy">提现收益</string>
+
 
     <string name="startDate">开始时间</string>
     <string name="endDate">结束时间</string>
@@ -167,6 +172,8 @@
     <string name="add">添加</string>
     <string name="unbindAsset">解除资产</string>
 
+    <string name="totalIncome">总资产</string>
+
 
     <string name="today">今日</string>
     <string name="yesterday">昨日</string>
@@ -233,6 +240,10 @@
 
     <string name="selectAuthWay">选择验证方式</string>
     <string name="freeMode">免费模式</string>
+    <string name="parameterChange">参数调整</string>
+
+    <string name="sqgl">授权管理</string>
+    <string name="qxsq">取消授权</string>
 
 
 </resources>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="registerBody"
+            type="com.example.godcode.bean.RegisterBody" />
+
+        <variable
+            name="presenter"
+            type="com.example.godcode.presenter.Presenter" />
+
+        <variable
+            name="isEmail"
+            type="boolean" />
+
+
+        <variable
+            name="fragment"
+            type="com.example.godcode.ui.fragment.loginActivity.RegisterFragment" />
+
+        <import type="android.view.View" />
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <ImageButton
+            android:id="@+id/exit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/exit"
+            android:onClick="exit" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="账号注册"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cb_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:checked="@{isEmail}"
+                android:text="启用邮箱" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider_a2"
+            android:orientation="vertical"
+            android:showDividers="middle|beginning|end">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:divider="@drawable/divider_a2"
+                android:gravity="center_vertical"
+                android:showDividers="middle"
+                android:visibility="@{isEmail?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="邮箱"
+                    android:textSize="43pt" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:background="@null"
+                    android:hint="请输入邮箱地址"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="10dp"
+                    android:text="@={registerBody.emailAddress}"
+                    android:textSize="43pt" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:divider="@drawable/divider_a2"
+                android:gravity="center_vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="手机号"
+                    android:textSize="43pt" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:background="@null"
+                    android:hint="请输入手机号"
+                    android:inputType="number"
+                    android:paddingLeft="10dp"
+                    android:text="@={registerBody.phoneNumber}"
+                    android:textSize="43pt" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:divider="@drawable/divider_a2"
+                android:gravity="center_vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="验证码"
+                    android:textSize="43pt" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请输入验证码"
+                        android:inputType="number"
+                        android:paddingLeft="10dp"
+                        android:text="@={registerBody.verificationCode}"
+                        android:textSize="43pt" />
+
+                    <TextView
+                        android:id="@+id/getYzm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_tv"
+                        android:gravity="center"
+                        android:hint="获取验证码"
+                        android:textColorHint="#000"
+                        android:textColor="#000"
+                        android:textSize="40pt" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:divider="@drawable/divider_a2"
+                android:gravity="center_vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="密码"
+                    android:textSize="43pt" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:background="@null"
+                    android:hint="请输入密码"
+                    android:inputType="number"
+                    android:paddingLeft="10dp"
+                    android:text="@={registerBody.password}"
+                    android:textSize="43pt" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/register"
+            style="@style/btn1"
+            android:layout_marginTop="30dp"
+            android:text="注册" />
+
+    </LinearLayout>
+
+</layout>

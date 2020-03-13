@@ -78,10 +78,11 @@ public class SettingFragment extends BaseFragment {
             public void onClick(View v) {
                 HttpUtil.getInstance().exit(Constant.userId, Constant.uniquenessToken).subscribe(
                         exitStr -> {
-                            LoginResultOption.getInstance().exit();
-                            System.exit(0);
+
                         }
                 );
+                LoginResultOption.getInstance().exit();
+                System.exit(0);
             }
         });
 

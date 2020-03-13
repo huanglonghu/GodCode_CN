@@ -37,7 +37,6 @@ public class BalanceFragment extends BaseFragment {
     private DecimalFormat decimalFormat;
     private double withdrawRate;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -100,10 +99,6 @@ public class BalanceFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 TxFragment txFragment = new TxFragment();
-                Bundle bundle = new Bundle();
-                bundle.putDouble("balance", balances);
-                bundle.putDouble("withdrawRate", withdrawRate);
-                txFragment.setArguments(bundle);
                 presenter.step2Fragment(txFragment, "tx");
             }
         });
@@ -154,6 +149,8 @@ public class BalanceFragment extends BaseFragment {
                         balances = result.getBalances();
                         withdrawRate = result.getWithdrawRate();
                         binding.balance.setText(decimalFormat.format(balances));
+                        double canPutMoney = result.getCanPutMoney();
+
                     }
                 }
         );

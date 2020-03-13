@@ -42,17 +42,9 @@ public class TxFragment extends BaseFragment {
 
     private ArrayList<BaseFragment> fragments = new ArrayList<>();
 
-    private double balance;
+
     private String bank;
     private double money;
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
 
     public String getBank() {
         return bank;
@@ -70,19 +62,8 @@ public class TxFragment extends BaseFragment {
         this.money = money;
     }
 
-    private double withdrawRate;
-
-    public double getWithdrawRate() {
-        return withdrawRate;
-    }
-
-    public void setWithdrawRate(double withdrawRate) {
-        this.withdrawRate = withdrawRate;
-    }
 
     public void initView() {
-        setBalance(getArguments().getDouble("balance"));
-        setWithdrawRate(getArguments().getDouble("withdrawRate"));
         Tx_firstFragment tx_firstFragment = new Tx_firstFragment();
         TxSuccessFragment txSuccessFragment = new TxSuccessFragment();
         fragments.add(tx_firstFragment);

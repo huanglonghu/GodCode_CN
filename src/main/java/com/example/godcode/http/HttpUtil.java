@@ -43,6 +43,7 @@ import com.example.godcode.bean.TransationDetail;
 import com.example.godcode.bean.TransferBody;
 import com.example.godcode.bean.TransferDivide;
 import com.example.godcode.bean.Tx;
+import com.example.godcode.bean.TxSyBody;
 import com.example.godcode.bean.UnLockMc;
 import com.example.godcode.bean.UpdateFriend;
 import com.example.godcode.bean.WxPay;
@@ -53,6 +54,8 @@ import com.example.godcode.ui.view.widget.ErrorDialog;
 import com.example.godcode.utils.ErrrCodeShow;
 import com.example.godcode.utils.LogUtil;
 import com.example.godcode.utils.SharepreferenceUtil;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,6 +82,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public class HttpUtil {
     private HttpInterface httpInterface;
@@ -270,6 +277,16 @@ public class HttpUtil {
 
     public Observable<String> createDivide(CreateDivide createDivide) {
         Call<ResponseBody> call = httpInterface.createRevenueDivide(createDivide);
+        return enqueueCall(call);
+    }
+
+    public Observable<String> resetPwd(String phone, String code, String pwd) {
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("phoneNumberOrEmail", phone);
+        map.put("verificationCode", code);
+        map.put("newPassword", pwd);
+        Call<ResponseBody> call = httpInterface.resetPwd(map);
         return enqueueCall(call);
     }
 
@@ -718,6 +735,28 @@ public class HttpUtil {
         return enqueueCall(ca);
     }
 
+    public Observable<String> querryTxSy(TxSyBody txSyBody) {
+        Call<ResponseBody> call = httpInterface.getTxSy(txSyBody);
+        return enqueueCall(call);
+    }
+
+    public Observable<String> getUserList(boolean iSAuthorize) {
+        Call<ResponseBody> call = httpInterface.getUserList(iSAuthorize, Constant.userId);
+        return enqueueCall(call);
+    }
+
+    public Observable<String> addMcManager(int hostUserID, int managerUserID) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("hostUserID", hostUserID);
+        map.put("managerUserID", managerUserID);
+        Call<ResponseBody> call = httpInterface.addMcManager(map);
+        return enqueueCall(call);
+    }
+
+    public Observable<String> deleteMcUser(int id) {
+        Call<ResponseBody> call = httpInterface.deleteMcManager(id);
+        return enqueueCall(call);
+    }
 
     HashMap<Call<ResponseBody>, NetLoading> map = new HashMap<>();
 
@@ -755,10 +794,13 @@ public class HttpUtil {
                         String errorBody = response.errorBody().string();
                         LogUtil.log(body + "--unsuccess---" + errorBody);
                         if (!TextUtils.isEmpty(errorBody) && errorBody.contains("message")) {
-                            String errorCodeStr = errorBody.substring(errorBody.indexOf("\"code\":") + "\"code\":".length(), errorBody.indexOf(",\"message\""));
-                            int errorCode = Integer.parseInt(errorCodeStr.trim());
-
-                            ErrrCodeShow.showToast(errorCode, context, errorBody);
+                            JSONObject jo= new JSONObject(errorBody);
+                            JSONObject error = jo.getJSONObject("error");
+                            int errorCode = error.getInt("code");
+                            String message = error.getString("message");
+                            LogUtil.log(message+"============error=========="+errorCode);
+                           // ErrrCodeShow.showToast(errorCode, context, errorBody);
+                            Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
                             if (errorCode == 2008 || errorCode == 2000 || errorCode == 3002 || errorCode == 4006 || errorCode == 6004) {
                                 if (errorCode == 4006) {
                                     Presenter.getInstance().exit(context);

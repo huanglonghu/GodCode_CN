@@ -26,6 +26,7 @@ public class MyEditText extends EditText {
         addTextChangedListener(watcher);
     }
 
+
     private TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -34,7 +35,6 @@ public class MyEditText extends EditText {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String str = s.toString().trim();
-            LogUtil.log("-------Str---------"+str);
             if (!TextUtils.isEmpty(str) ){
                 char first = str.charAt(0);
                 if(first>=48&&first<=57){

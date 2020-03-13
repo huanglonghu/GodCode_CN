@@ -39,6 +39,7 @@ public class WebSocketNewsHandler {
         switch (eventType) {
             case "1":
             case "2":
+            case "28":
                 notification.setContent(webSocketNews3.getData().getMsg());
                 notification.setDate(webSocketNews3.getSendTime());
                 notification.setType(3);
@@ -102,7 +103,7 @@ public class WebSocketNewsHandler {
 
     String[] titleArray = {"好友请求", "好友同意", "银行卡审核成功", "提现成功", "好友转账", "二维码收款", "银行卡审核失败", "提现失败", "登录异常", "退款到账",
             "产品营收到账", "删除好友", "资产分成", "修改资产分成", "删除资产分成", "解除资产绑定", "产权归还", "产权转移", "营收分成", "", "", "申请积分", "返还积分", "申请积分被拒绝", "返还积分被拒绝",
-            "申请积分已通过", "返还积分已通过"
+            "申请积分已通过", "返还积分已通过","电量过低"
 
     };
 

@@ -117,7 +117,6 @@ public class MainActivity extends BaseActivity {
                     case EventType.EVENTTYPE_ADDFRIEND:
                         Presenter.getInstance().showNew(1);
                         break;
-
                 }
 
             }

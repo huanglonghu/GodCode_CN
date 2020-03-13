@@ -4,12 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
-/**
- * @author: lijuan
- * @description:
- * @date: 2017-05-31
- * @time: 17:49
- */
 public class CustomLayout extends ViewGroup {
 
     public CustomLayout(Context context) {

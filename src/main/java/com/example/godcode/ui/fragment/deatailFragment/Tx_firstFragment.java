@@ -3,6 +3,7 @@ package com.example.godcode.ui.fragment.deatailFragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.godcode.R;
+import com.example.godcode.bean.BalanceResponse;
 import com.example.godcode.bean.BankBean;
 import com.example.godcode.bean.BankCard;
 import com.example.godcode.bean.Tx;
@@ -52,8 +54,10 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
     private View view;
     private double money;
     private TxFragment parentFragment;
-    private double rate;
     private HashMap<String, Integer> resMap;
+    private double balance;
+    private double withdrawRate;
+    private double canPutMoney;
 
     @Nullable
     @Override
@@ -62,9 +66,9 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
             parentFragment = (TxFragment) getParentFragment();
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tx_first, container, false);
             binding.etMoney.setMoneyValueListener(this);
-            binding.setBalance(parentFragment.getBalance());
             view = binding.getRoot();
             initView();
+            initData();
             initListener();
         }
         initData();
@@ -72,8 +76,34 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
     }
 
     private void initData() {
-
+        qurryBalance();
         getBankList();
+    }
+
+    private double maxTxMoney;
+
+    public void qurryBalance() {
+        HttpUtil.getInstance().querryBalance(Constant.userId).subscribe(
+                balanceStr -> {
+                    BalanceResponse balanceResponse = new Gson().fromJson(balanceStr, BalanceResponse.class);
+                    BalanceResponse.ResultBean result = balanceResponse.getResult();
+                    if (result != null && binding != null) {
+                        balance = result.getBalances();
+                        binding.setBalance(balance);
+                        withdrawRate = result.getWithdrawRate();
+                        canPutMoney = result.getCanPutMoney();
+                        if(balance>0){
+                            if (balance > 100) {
+                                maxTxMoney = new BigDecimal(canPutMoney - (canPutMoney * withdrawRate)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                            } else {
+                                maxTxMoney = new BigDecimal(canPutMoney - (100 * withdrawRate)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                            }
+                        }
+                        binding.txRate.setText("(收取" + FormatUtil.getInstance().get2double(withdrawRate * 100) + "%服务费)");
+                        binding.useBalance.setText("可提金额" + (maxTxMoney));
+                    }
+                }
+        );
     }
 
     private void isEffectiveDate() {
@@ -105,6 +135,8 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
         requestQueue.add(stringRequest);
     }
 
+    private boolean txALl;
+
     private void initListener() {
         binding.btnTx.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,29 +148,33 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
         binding.txAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double balance = parentFragment.getBalance();
                 double txf = 0;
+                txALl = true;
                 if (balance <= 100) {
-                    if (balance <= 0.6) {
+                    txf = new BigDecimal(withdrawRate * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    if (balance <= txf) {
                         binding.btnTx.setEnabled(false);
                         binding.setTx(false);
-                        binding.useBalance.setText("服务费0.6元,超过可用余额");
+                        binding.useBalance.setText("服务费" + txf + "元,余额不足");
                     } else {
-                        double value = balance - 0.6;
+                        double value = canPutMoney - txf;
                         BigDecimal bg = new BigDecimal(value);
                         value = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         binding.etMoney.setText(value + "");
+                        binding.useBalance.setText("服务费" + txf + "元");
                     }
                 } else {
-                    txf = balance * rate;
-                    BigDecimal bg = new BigDecimal(txf);
-                    txf = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    txf = new BigDecimal(canPutMoney * withdrawRate).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     if (balance > txf) {
-                        BigDecimal bg1 = new BigDecimal(balance - txf);
+                        BigDecimal bg1 = new BigDecimal(canPutMoney - txf);
                         double value = bg1.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         binding.etMoney.setText(value + "");
+                        binding.useBalance.setText("服务费" + txf + "元");
                     }
-
+                }
+                String money = binding.etMoney.getText().toString();
+                if(!TextUtils.isEmpty(money)){
+                    binding.etMoney.setSelection(money.length());
                 }
             }
         });
@@ -150,7 +186,6 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
                     BankSelectFragment bankSelectFragment = new BankSelectFragment();
                     bankSelectFragment.setBankMsg(bankList, bankIndex);
                     presenter.step2Fragment(bankSelectFragment, "bankSelect");
-
                 } else {
                     presenter.step2Fragment("bankCard");
                 }
@@ -190,7 +225,7 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
             presenter.step2Fragment("bankCard");
         } else {
             money = Double.parseDouble(binding.etMoney.getText().toString());
-            if (money > parentFragment.getBalance()) {
+            if (money > balance) {
                 Toast.makeText(activity, "超出本次可提现金额", Toast.LENGTH_SHORT).show();
             } else {
                 PayPwdSetting.getInstance().checkPwd(money, new ClickSureListener() {
@@ -229,10 +264,7 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
         resMap.put("兴业银行", R.drawable.icon_xy);
         resMap.put("汇丰中国银行", R.drawable.icon_hf);
         binding.etMoney.addTextChangedListener(new MoneyTextWatcher(binding.etMoney));
-        rate = parentFragment.getWithdrawRate();
-        binding.txRate.setText("(收取" + FormatUtil.getInstance().get2double(rate * 100) + "%服务费)");
         binding.setTx(true);
-        binding.useBalance.setText("可用余额" + parentFragment.getBalance());
     }
 
     private ArrayList<BankBean> bankList = new ArrayList<>();
@@ -311,55 +343,54 @@ public class Tx_firstFragment extends BaseFragment implements MyEditText.MoneyVa
         } else {
             presenter.back();
         }
-
     }
 
 
     @Override
     public void setEnable(boolean enable, double money) {
         double txf = 0;
-        double balance = parentFragment.getBalance();
-        if (money <= 100) {
-            if (enable) {
-                txf = 0.6;
-                if (money + txf <= parentFragment.getBalance()) {
+        if(money==maxTxMoney){
+            txf=new BigDecimal((canPutMoney-maxTxMoney)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            binding.useBalance.setText("服务费" + txf+ "元");
+        }else {
+            if (money <= 100) {
+                if (enable) {
+                    txf = new BigDecimal(100 * withdrawRate).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    BigDecimal bg = new BigDecimal(txf + money);
+                    double v = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    if (v <= canPutMoney) {
+                        binding.setTx(true);
+                        binding.btnTx.setEnabled(true);
+                        binding.useBalance.setText("服务费" + txf + "元");
+                    } else {
+                        binding.btnTx.setEnabled(false);
+                        binding.setTx(false);
+                        binding.useBalance.setText("超过今日可提金额");
+                    }
+                } else {
                     binding.setTx(true);
+                    binding.btnTx.setEnabled(false);
+                    binding.useBalance.setText("今日可提现金额" + maxTxMoney + "");
+                }
+            } else {
+                txf = new BigDecimal(money * withdrawRate).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                BigDecimal bg3 = new BigDecimal(money + txf);
+                double v1 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                if (v1 <= canPutMoney) {
                     binding.btnTx.setEnabled(true);
-                    binding.useBalance.setText("服务费0.6元");
+                    binding.setTx(true);
+                    txf = money * withdrawRate;
+                    BigDecimal bg2 = new BigDecimal(txf);
+                    txf = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    binding.useBalance.setText("服务费" + txf + "元");
                 } else {
                     binding.btnTx.setEnabled(false);
                     binding.setTx(false);
-                    binding.useBalance.setText("超过可用余额");
+                    binding.useBalance.setText("超过今日可提现金额");
                 }
-            } else {
-                binding.setTx(true);
-                binding.btnTx.setEnabled(false);
-                binding.useBalance.setText("可用余额" + (parentFragment.getBalance()) + "");
             }
-        } else {
-            double a = balance * rate;
-            BigDecimal bg = new BigDecimal(a);
-            double v = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            BigDecimal bg3 = new BigDecimal(money + v);
-            double v1 = bg3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            if (v1 < balance) {
-                binding.btnTx.setEnabled(true);
-                binding.setTx(true);
-                txf = money * rate;
-                BigDecimal bg2 = new BigDecimal(txf);
-                txf = bg2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-                binding.useBalance.setText("服务费" + txf + "元");
-            } else if (v1 == balance) {
-                binding.btnTx.setEnabled(true);
-                binding.setTx(true);
-                binding.useBalance.setText("服务费" + v + "元");
-            } else {
-                binding.btnTx.setEnabled(false);
-                binding.setTx(false);
-                binding.useBalance.setText("超过可用余额");
-            }
-
         }
+
 
 
     }

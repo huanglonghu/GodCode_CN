@@ -79,7 +79,7 @@ public class MineFragment extends BaseFragment {
                         WsHeart wsHeart = (WsHeart) rxEvent.getBundle().getSerializable("heart");
                         String androidVer = wsHeart.getData().getAndroidVer();
                         try {
-                            String versionName = GodCodeApplication.getInstance().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName;
+                            String versionName = GodCodeApplication.getInstance().getPackageManager().getPackageInfo(GodCodeApplication.getInstance().getPackageName(), 0).versionName;
                             int version1 = Integer.parseInt(versionName.replace(".", ""));
                             int version2 = Integer.parseInt(androidVer.replace(".", ""));
                             LogUtil.log(version1 + "==========收到心跳============" + version2);

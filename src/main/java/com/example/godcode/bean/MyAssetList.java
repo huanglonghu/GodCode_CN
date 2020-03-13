@@ -86,7 +86,7 @@ public class MyAssetList {
         private int normalCount;
         private int errorCount;
         private double dividedMoney;
-        private int coinCount;
+        private double coinCount;
         private int count;
         private int sumAwardCount;
         private List<DataBean> data;
@@ -124,11 +124,11 @@ public class MyAssetList {
             this.dividedMoney = dividedMoney;
         }
 
-        public int getCoinCount() {
+        public double getCoinCount() {
             return coinCount;
         }
 
-        public void setCoinCount(int coinCount) {
+        public void setCoinCount(double coinCount) {
             this.coinCount = coinCount;
         }
 

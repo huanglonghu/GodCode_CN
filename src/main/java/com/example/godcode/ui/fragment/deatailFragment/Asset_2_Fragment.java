@@ -154,6 +154,7 @@ public class Asset_2_Fragment extends BaseFragment implements EditAssetFragment.
                         upload(filePart, bitmap);
                     }
                 }).requestCode(ActivityResultHandler.REQUEST_SELECT_PHOTO).intent(intent).activity(activity).build().startActivityForResult();
+
             }
         });
         RxBus.getInstance().toObservable(RxEvent.class).subscribe(new Observer<RxEvent>() {
