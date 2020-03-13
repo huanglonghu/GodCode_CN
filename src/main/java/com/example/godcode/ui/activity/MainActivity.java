@@ -69,6 +69,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void init() {
+        //
         HttpUtil.getInstance().init(this);
         PayPwdSetting.getInstance().initContext(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
